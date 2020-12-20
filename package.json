@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/davidlpc1/videomaker-filipedeschamps/issues"
   },
-  "homepage": "https://github.com/davidlpc1/videomaker-filipedeschamps#readme"
+  "homepage": "https://github.com/davidlpc1/videomaker-filipedeschamps#readme",
+  "dependencies": {
+    "readline-sync": "^1.4.10"
+  }
 }
