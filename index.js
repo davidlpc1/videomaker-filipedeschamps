@@ -4,8 +4,6 @@ const robots = {
 } 
 
 async function start(){
- 
-function start(){
     const content = {};
 
     content.searchTerm = askAndReturnSearchTerm();
@@ -28,4 +26,4 @@ function start(){
     console.log(content);
 }
 
-start();
+start()
