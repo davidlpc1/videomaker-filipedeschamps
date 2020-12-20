@@ -17,6 +17,9 @@
   },
   "homepage": "https://github.com/davidlpc1/videomaker-filipedeschamps#readme",
   "dependencies": {
-    "readline-sync": "^1.4.10"
+    "algorithmia": "^0.3.10",
+    "readline-sync": "^1.4.10",
+    "sbd": "^1.0.18",
+    "watson-developer-cloud": "^4.0.1"
   }
 }
