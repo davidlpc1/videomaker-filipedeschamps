@@ -2,16 +2,27 @@ const algorithmia = require('algorithmia')
 const algorithmiaApiKey = require('../credentials/algorithmia.json').apiKey;
 const sentenceBoundaryDetection = require('sbd')
 
+const watsonApiKey = require('../credentials/watson-nlu.json').apikey
+const NaturalLanguageUnderstandingV1 = require('watson-developer-cloud/natural-language-understanding/v1.js');
+
+var nlu = new NaturalLanguageUnderstandingV1({
+    iam_apikey: watsonApiKey,
+    version: '2018-04-05',
+    url: 'https://gateway.watsonplatform.net/natural-language-understanding/api/'
+});
+
 function error(err,nameFunction) {
     console.error(`Erro em ${nameFunction} >>`)
     console.error(err)
+    throw err
 }
 
 async function robot(content){
     await fetchContentFromWikipedia(content);
     sanitizateContent(content);
     breakContentIntoSentences(content);
-
+    limitMaximumSentences(content);
+    await fetchKeywordsOfAllSentences(content);
 
     async function fetchContentFromWikipedia(content){
         try{
@@ -67,6 +78,41 @@ async function robot(content){
             })
         );
     }
+
+    // ========================================================
+    
+    function limitMaximumSentences(content){
+        content.sentences = content.sentences.slice(0, content.maximumSentences)
+    }
+
+    // ===========================================
+
+    async function fetchKeywordsOfAllSentences(content){
+        for(const sentence of content.sentences){
+            sentence.keywords = await fetchWatsonAndReturnKeywords(sentence.text)
+        }
+    }
+
+    // =====================================================
+
+    async function fetchWatsonAndReturnKeywords(sentence) {
+        return new Promise((resolve, reject) => {  
+            nlu.analyze({
+                text:sentence,
+                features:{
+                    keywords: {}
+                }
+            }, (error,response) => {
+                if(error) error(error,'fetchWatsonAndReturnKeywords')
+
+                const keywords = response.keywords.map(keyword => keyword.text )
+
+                resolve(keywords)
+            }) 
+        })
+    }
+
+    // END OF TEXT ROBOT
 }
 
 module.exports = robot;
