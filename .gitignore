@@ -108,3 +108,6 @@ credentials/*.json
 
 # content.json file
 content.json
+
+# Images for the videos
+content/*.png
