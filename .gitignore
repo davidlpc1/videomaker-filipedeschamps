@@ -112,3 +112,6 @@ content.json
 # Images for the videos
 content/*.png
 content/*.jpg
+content/*js
+content/*mp4
+content/*mov
